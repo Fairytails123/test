@@ -1,0 +1,311 @@
+/* ==============================================================
+   Fairy Tails Design System â colors_and_type.css
+   Single source of truth for design tokens.
+   ============================================================== */
+
+
+/* Webfonts via Google Fonts (substitution â flagged in README) */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap");
+
+
+:root {
+    /* ============================================================
+       1. RAW PALETTE
+       ============================================================ */
+
+
+    /* Brand â primary mark colour, sampled from logo (bright sky blue) */
+    --ft-brand:        #00AFF1;
+    --ft-brand-dark:   #0090C8;
+    --ft-brand-deep:   #006A94;
+    --ft-brand-light-bg: #E6F7FE;
+    --ft-ink:          #111111;   /* black silhouettes in mark */
+
+
+    /* Secondary accent (kept for OS-style chrome / system blue) */
+    --ft-ios-blue:      #007AFF;
+    --ft-ios-blue-dark: #0056CC;
+
+
+    /* Service semantic colours (operational tools) â Full day uses brand blue */
+    --service-half-day-am: #FF9500;     /* amber */
+    --service-full-day:    #00AFF1;     /* brand blue */
+    --service-boarding:    #AF52DE;     /* purple */
+    --service-school:      #FF2D55;     /* pink */
+    --service-school-alt:  #8B5CF6;     /* violet (boarding-school on TV) */
+    --service-grooming:    #32ADE6;     /* teal */
+
+
+    /* Status (iOS-derived) */
+    --status-success: #34C759;
+    --status-warning: #FF9500;
+    --status-danger:  #FF3B30;
+    --status-info:    #5AC8FA;
+    --status-purple:  #AF52DE;
+    --status-pink:    #FF2D55;
+    --status-indigo:  #5856D6;
+
+
+    /* Neutrals */
+    --bg-page:        #F2F2F7;
+    --bg-card:        #FFFFFF;
+    --bg-tinted:      #E5E5EA;
+    --bg-row-alt:     #F8FBFE;
+
+
+    --ink:            #1C1C1E;   /* fg1 */
+    --ink-secondary:  #8E8E93;   /* fg2 */
+    --ink-tertiary:   #AEAEB2;   /* fg3 */
+    --ink-light:      #C7C7CC;   /* fg4 */
+
+
+    --separator:        rgba(60, 60, 67, 0.12);
+    --separator-opaque: #C6C6C8;
+
+
+    /* Dark surface (TV training display) */
+    --bg-dark:        #1A1A2E;
+    --bg-dark-card:   #16213E;
+    --bg-dark-card-2: #0F3460;
+    --ink-on-dark:    #FFFFFF;
+    --ink-on-dark-2:  rgba(255, 255, 255, 0.85);
+    --ink-on-dark-3:  rgba(255, 255, 255, 0.50);
+    --separator-on-dark: rgba(255, 255, 255, 0.08);
+
+
+    /* Tinted action surfaces (8 / 12 / 18% alpha) â canonical */
+    --tint-blue-soft:    rgba(0, 122, 255, 0.08);
+    --tint-blue:         rgba(0, 122, 255, 0.10);
+    --tint-blue-strong:  rgba(0, 122, 255, 0.18);
+    --tint-amber:        rgba(255, 149, 0, 0.12);
+    --tint-green:        rgba(52, 199, 89, 0.12);
+    --tint-purple:       rgba(175, 82, 222, 0.10);
+    --tint-pink:         rgba(255, 45, 85, 0.10);
+    --tint-teal:         rgba(50, 173, 230, 0.10);
+    --tint-red:          rgba(255, 59, 48, 0.10);
+
+
+    /* Functional gradients (only two, both functional) */
+    --gradient-sky:    linear-gradient(135deg, #00AFF1 0%, #0090C8 100%);
+    --gradient-school: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+
+
+    /* ============================================================
+       2. TYPOGRAPHY
+       ============================================================ */
+    --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                   "SF Pro Text", system-ui, "Segoe UI", Roboto,
+                   Helvetica, Arial, sans-serif;
+    --font-display: "Plus Jakarta Sans", var(--font-system);
+    --font-tv: "Nunito", var(--font-system);
+
+
+    /* Modular scale */
+    --fs-12: 12px;
+    --fs-13: 13px;
+    --fs-14: 14px;
+    --fs-15: 15px;
+    --fs-16: 16px;
+    --fs-18: 18px;
+    --fs-20: 20px;
+    --fs-24: 24px;
+    --fs-28: 28px;
+    --fs-32: 32px;
+    --fs-40: 40px;
+    --fs-56: 56px;
+    --fs-72: 72px;
+
+
+    /* Weights */
+    --fw-regular:  400;
+    --fw-medium:   500;
+    --fw-semibold: 600;
+    --fw-bold:     700;
+    --fw-heavy:    800;
+
+
+    /* Line heights */
+    --lh-tight:   1.15;
+    --lh-snug:    1.25;
+    --lh-normal:  1.45;
+    --lh-relaxed: 1.6;
+
+
+    /* Letter-spacing */
+    --tracking-display: -0.02em;
+    --tracking-body:    0;
+    --tracking-micro:   0.05em;
+
+
+    /* ============================================================
+       3. SPACING (8-pt grid)
+       ============================================================ */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-8: 48px;
+    --space-10: 64px;
+
+
+    --touch-min: 44px;
+    --layout-dashboard-max: 1280px;
+    --layout-form-max: 640px;
+
+
+    /* ============================================================
+       4. RADII
+       ============================================================ */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-xl: 22px;
+    --radius-pill: 9999px;
+
+
+    /* ============================================================
+       5. SHADOWS (composite, Apple-style)
+       ============================================================ */
+    --shadow-xs: 0 0.5px 1px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-card: 0 0.5px 0 rgba(0, 0, 0, 0.04),
+                   0 1px 3px rgba(0, 0, 0, 0.04);
+
+
+    /* Focus ring (brand blue) */
+    --focus-ring: 0 0 0 3px rgba(0, 175, 241, 0.25);
+
+
+    /* ============================================================
+       6. MOTION
+       ============================================================ */
+    --motion-fast:    150ms;
+    --motion-default: 200ms;
+    --motion-slow:    250ms;
+    --motion-disclose: 350ms;
+    --easing: ease;
+
+
+    /* ============================================================
+       7. FROSTED-GLASS (iOS chrome)
+       ============================================================ */
+    --glass-bg: rgba(249, 249, 249, 0.94);
+    --glass-filter: saturate(180%) blur(20px);
+}
+
+
+/* ==============================================================
+   8. SEMANTIC TYPE STYLES
+   ============================================================== */
+.h1 {
+    font-family: var(--font-system);
+    font-size: var(--fs-32);
+    font-weight: var(--fw-heavy);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--ink);
+}
+
+
+.h2 {
+    font-family: var(--font-system);
+    font-size: var(--fs-24);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--ink);
+}
+
+
+.h3 {
+    font-family: var(--font-system);
+    font-size: var(--fs-20);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-snug);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+
+.title {
+    font-family: var(--font-system);
+    font-size: var(--fs-16);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-snug);
+    color: var(--ink);
+}
+
+
+.body {
+    font-family: var(--font-system);
+    font-size: var(--fs-15);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-normal);
+    color: var(--ink);
+}
+
+
+.body-sm {
+    font-family: var(--font-system);
+    font-size: var(--fs-13);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-normal);
+    color: var(--ink-secondary);
+}
+
+
+.label {
+    font-family: var(--font-system);
+    font-size: var(--fs-12);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-snug);
+    color: var(--ink-secondary);
+}
+
+
+.micro {
+    font-family: var(--font-system);
+    font-size: 10px;
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-micro);
+    color: var(--ink-secondary);
+}
+
+
+.numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+}
+
+
+/* ==============================================================
+   9. BASELINE
+   ============================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+
+body.ft-base {
+    margin: 0;
+    font-family: var(--font-system);
+    font-size: var(--fs-15);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-normal);
+    color: var(--ink);
+    background: var(--bg-page);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

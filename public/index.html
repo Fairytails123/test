@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Staff Whiteboard â Fairy Tails (Trial)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+    html, body { margin: 0; height: 100%; background: #1C1C1E; font-family: var(--font-system); -webkit-font-smoothing: antialiased; color: #1C1C1E; }
+    @keyframes ftFade { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes ftRise { from { transform: translateY(100%); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
+
+    .phone-stage {
+        min-height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+        background: #1C1C1E;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .phone {
+        width: 412px; height: 892px;
+        background: #F2F2F7;
+        border-radius: 44px;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.35), inset 0 0 0 8px #0a0a0a, inset 0 0 0 9px #2a2a2a;
+        overflow: hidden; position: relative;
+    }
+    .phone-screen { width: 100%; height: 100%; overflow: hidden; position: relative; }
+    .phone-content {
+        position: absolute; inset: 0;
+        overflow-y: auto; overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    .phone-content::-webkit-scrollbar { display: none; }
+    .android-statusbar {
+        position: absolute; top: 0; left: 0; right: 0;
+        height: 28px; z-index: 50;
+        background: rgba(249,249,249,0.94);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 16px;
+        font-size: 12px; font-weight: 700; color: #1C1C1E;
+        font-variant-numeric: tabular-nums;
+    }
+    .topbar-pad { height: 28px; }
+    .api-banner {
+        position: fixed; top: 8px; left: 8px;
+        background: #FFE066; color: #1C1C1E;
+        padding: 4px 10px; border-radius: 6px;
+        font-size: 11px; font-weight: 700;
+        z-index: 999; letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+    .api-banner.err { background: #FF3B30; color: #fff; }
+
+
+    @media (max-width: 480px) {
+        .phone-stage { padding: 0; background: #F2F2F7; }
+        .phone {
+            width: 100%; height: 100vh; height: 100dvh;
+            border-radius: 0; box-shadow: none;
+        }
+    }
+</style>
+<script>
+/* ============================================================
+   STATIC-HOST FALLBACK
+   On GitHub Pages (or any static host) there is no Express
+   backend, so we intercept fetch() for /api/* and answer
+   from localStorage with the same seed as server/index.js.
+   On localhost or any host running the real Express server
+   this block is a no-op.
+   ============================================================ */
+(function setupStaticFallback() {
+    var host = location.hostname;
+    var isStaticHost = host.endsWith(".github.io") || host.endsWith(".pages.dev") || host.endsWith(".netlify.app");
+    if (!isStaticHost) return;
+
+
+    var STORAGE_KEY = "ft_test_trial_dogs_v1";
+    var SEED = [
+        { id:1,  name:"Tilly",  surname:"Hughes",     breed:"Cockapoo",         service:"half-am",  vanAm:"BV1", vanPm:"P",   needsWalk:true,  walkDone:false, photoDone:true  },
+        { id:2,  name:"Bear",   surname:"Whittaker",  breed:"Labrador",         service:"full",     vanAm:"BV1", vanPm:"BV2", needsWalk:true,  walkDone:true,  photoDone:true  },
+        { id:3,  name:"Ziggy",  surname:"Jones",      breed:"Border Collie",    service:"boarding", vanAm:"DV1", vanPm:"DV1", needsWalk:true,  walkDone:false, photoDone:false },
+        { id:4,  name:"Mabel",  surname:"Carter",     breed:"French Bulldog",   service:"half-am",  vanAm:"DV2", vanPm:"P",   needsWalk:false, walkDone:false, photoDone:false },
+        { id:5,  name:"Rufus",  surname:"Patel",      breed:"Golden Retriever", service:"full",     vanAm:"SV1", vanPm:"SV1", needsWalk:true,  walkDone:true,  photoDone:true  },
+        { id:6,  name:"Pippa",  surname:"Okafor",     breed:"Spaniel",          service:"full",     vanAm:"P",   vanPm:"BV2", needsWalk:true,  walkDone:false, photoDone:false },
+        { id:7,  name:"Otto",   surname:"Lindgren",   breed:"Dachshund",        service:"school",   vanAm:"P",   vanPm:"P",   needsWalk:false, walkDone:false, photoDone:true  },
+        { id:8,  name:"Luna",   surname:"Ashton",     breed:"Whippet",          service:"boarding", vanAm:"",    vanPm:"",    needsWalk:true,  walkDone:true,  photoDone:true  },
+        { id:9,  name:"Hugo",   surname:"Bennett",    breed:"Cocker Spaniel",   service:"full",     vanAm:"DV1", vanPm:"DV1", needsWalk:true,  walkDone:false, photoDone:false },
+        { id:10, name:"Daisy",  surname:"Reilly",     breed:"Cavapoo",          service:"grooming", vanAm:"P",   vanPm:"P",   needsWalk:false, walkDone:false, photoDone:false },
+        { id:11, name:"Marlow", surname:"Sato",       breed:"Vizsla",           service:"full",     vanAm:"SV1", vanPm:"SV1", needsWalk:true,  walkDone:true,  photoDone:true  },
+        { id:12, name:"Bonnie", surname:"McAllister", breed:"Bichon Frise",     service:"half-am",  vanAm:"BV1", vanPm:"P",   needsWalk:false, walkDone:false, photoDone:true  }
+    ];
+
+
+    function load() {
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) { localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED)); return SEED.slice(); }
+            return JSON.parse(raw);
+        } catch (_) { return SEED.slice(); }
+    }
+    function save(dogs) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(dogs)); } catch (_) {} }
+    function nextId(dogs) { return dogs.reduce(function(m, d){ return Math.max(m, d.id); }, 0) + 1; }
+    function J(body, status) {
+        return new Response(JSON.stringify(body), {
+            status: status || 200,
+            headers: { "Content-Type": "application/json" }
+        });
+    }
+
+
+    var realFetch = window.fetch.bind(window);
+    window.fetch = function(input, init) {
+        var url = typeof input === "string" ? input : (input && input.url) || "";
+        var pathname = url;
+        try { if (url.indexOf("http") === 0) pathname = new URL(url).pathname; } catch (_) {}
+        if (pathname.indexOf("/api/") !== 0) return realFetch(input, init);
+
+
+        var method = ((init && init.method) || (input && input.method) || "GET").toUpperCase();
+        var body = null;
+        try { if (init && init.body) body = JSON.parse(init.body); } catch (_) {}
+
+
+        var dogs = load();
+
+
+        if (pathname === "/api/health" && method === "GET") {
+            return Promise.resolve(J({ ok: true, time: new Date().toISOString(), mode: "static-fallback" }));
+        }
+        if (pathname === "/api/dogs" && method === "GET") {
+            return Promise.resolve(J(dogs));
+        }
+        if (pathname === "/api/dogs" && method === "POST") {
+            var b = body || {};
+            if (!b.name || !String(b.name).trim()) return Promise.resolve(J({ error: "name is required" }, 400));
+            var valid = ["half-am","half-pm","full","boarding","school","grooming"];
+            var service = valid.indexOf(b.service) >= 0 ? b.service : "full";
+            var newDog = {
+                id: nextId(dogs),
+                name: String(b.name).trim(),
+                surname: String(b.surname || "").trim(),
+                breed: String(b.breed || "Mixed breed").trim(),
+                service: service,
+                vanAm: String(b.vanAm || ""),
+                vanPm: String(b.vanPm || ""),
+                needsWalk: !!b.needsWalk,
+                walkDone: !!b.walkDone,
+                photoDone: !!b.photoDone
+            };
+            dogs.push(newDog);
+            save(dogs);
+            return Promise.resolve(J(newDog, 201));
+        }
+        var idMatch = pathname.match(/^\/api\/dogs\/(\d+)$/);
+        if (idMatch && method === "PATCH") {
+            var id = Number(idMatch[1]);
+            var idx = -1;
+            for (var i = 0; i < dogs.length; i++) if (dogs[i].id === id) { idx = i; break; }
+            if (idx === -1) return Promise.resolve(J({ error: "not found" }, 404));
+            dogs[idx] = Object.assign({}, dogs[idx], body || {});
+            save(dogs);
+            return Promise.resolve(J(dogs[idx]));
+        }
+        if (idMatch && method === "DELETE") {
+            var id2 = Number(idMatch[1]);
+            var before = dogs.length;
+            dogs = dogs.filter(function(d){ return d.id !== id2; });
+            if (dogs.length === before) return Promise.resolve(J({ error: "not found" }, 404));
+            save(dogs);
+            return Promise.resolve(new Response(null, { status: 204 }));
+        }
+        if (pathname === "/api/_reset" && method === "POST") {
+            try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+            return Promise.resolve(J({ ok: true }));
+        }
+        return Promise.resolve(J({ error: "not found" }, 404));
+    };
+
+
+    window.__FT_STATIC_FALLBACK__ = true;
+})();
+</script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-screen-label="Whiteboard (trial)">
+<div id="root"></div>
+
+
+<script type="text/babel" src="MobileWhiteboard.jsx"></script>
+<script type="text/babel" src="AddDogSheet.jsx"></script>
+<script type="text/babel" src="Toast.jsx"></script>
+
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+
+window.SERVICE_META = {
+    "half-am":   { label: "Half day AM", icon: "âï¸", color: "#FF9500" },
+    "half-pm":   { label: "Half day PM", icon: "ð", color: "#FF6B35" },
+    "full":      { label: "Full day",    icon: "ð", color: "#00AFF1" },
+    "boarding":  { label: "Boarding",    icon: "ð ", color: "#AF52DE" },
+    "school":    { label: "School",      icon: "ð", color: "#FF2D55" },
+    "grooming":  { label: "Grooming",    icon: "âï¸", color: "#32ADE6" },
+};
+
+
+const API = "/api";
+
+
+async function apiGet(path) {
+    const r = await fetch(`${API}${path}`);
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    return r.json();
+}
+async function apiSend(method, path, body) {
+    const r = await fetch(`${API}${path}`, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: body ? JSON.stringify(body) : undefined,
+    });
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    return r.status === 204 ? null : r.json();
+}
+
+
+function App() {
+    const [dogs, setDogs] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState(null);
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [toast, setToast] = useState(null);
+    const [syncedAgo, setSyncedAgo] = useState(0);
+    const [outdoor, setOutdoor] = useState(false);
+
+
+    const showToast = (message, kind = "info") => {
+        setToast({ message, kind });
+        setTimeout(() => setToast(null), 2200);
+    };
+
+
+    // Initial load
+    useEffect(() => {
+        apiGet("/dogs")
+            .then(d => { setDogs(d); setLoaded(true); setSyncedAgo(0); })
+            .catch(e => { setError(e.message); setLoaded(true); });
+    }, []);
+
+
+    // Sync timer + periodic refetch every 20s
+    useEffect(() => {
+        const tick = setInterval(() => setSyncedAgo(s => s + 1), 1000);
+        const refresh = setInterval(() => {
+            apiGet("/dogs").then(d => { setDogs(d); setSyncedAgo(0); }).catch(() => {});
+        }, 20000);
+        return () => { clearInterval(tick); clearInterval(refresh); };
+    }, []);
+
+
+    const onTogglePhoto = async (id) => {
+        const dog = dogs.find(d => d.id === id);
+        if (!dog) return;
+        const next = !dog.photoDone;
+        setDogs(ds => ds.map(d => d.id === id ? { ...d, photoDone: next } : d)); // optimistic
+        try {
+            await apiSend("PATCH", `/dogs/${id}`, { photoDone: next });
+            showToast("Photo updated", "success");
+        } catch (e) {
+            setDogs(ds => ds.map(d => d.id === id ? { ...d, photoDone: !next } : d)); // revert
+            showToast("Save failed â try again", "warning");
+        }
+    };
+
+
+    const onToggleWalk = async (id) => {
+        const dog = dogs.find(d => d.id === id);
+        if (!dog || !dog.needsWalk) return;
+        const next = !dog.walkDone;
+        setDogs(ds => ds.map(d => d.id === id ? { ...d, walkDone: next } : d));
+        try {
+            await apiSend("PATCH", `/dogs/${id}`, { walkDone: next });
+            showToast("Walk updated", "success");
+        } catch (e) {
+            setDogs(ds => ds.map(d => d.id === id ? { ...d, walkDone: !next } : d));
+            showToast("Save failed â try again", "warning");
+        }
+    };
+
+
+    const onAdd = async (data) => {
+        try {
+            const created = await apiSend("POST", "/dogs", data);
+            setDogs(ds => [...ds, created]);
+            setSheetOpen(false);
+            showToast(`${created.name} added to ${window.SERVICE_META[created.service].label}`, "success");
+        } catch (e) {
+            showToast("Could not save â try again", "warning");
+        }
+    };
+
+
+    return (
+        <>
+            <div className={`api-banner${error ? " err" : ""}`}>
+                {error ? `API error: ${error}` : (loaded ? (window.__FT_STATIC_FALLBACK__ ? "Trial Â· static demo (localStorage)" : "Trial Â· API live") : "Loadingâ¦")}
+            </div>
+            <div className="phone-stage">
+                <div className="phone">
+                    <div className="phone-screen">
+                        <div className="android-statusbar">
+                            <span>9:41</span>
+                            <span style={{display:"flex",gap:6,alignItems:"center"}}>
+                                <span style={{fontSize:11}}>5G</span>
+                                <span>âââ</span>
+                                <span>87%</span>
+                            </span>
+                        </div>
+                        <div className="phone-content">
+                            <div className="topbar-pad"/>
+                            <window.MobileWhiteboard
+                                dogs={dogs}
+                                syncedAgo={syncedAgo}
+                                onTogglePhoto={onTogglePhoto}
+                                onToggleWalk={onToggleWalk}
+                                onAdd={() => setSheetOpen(true)}
+                                outdoor={outdoor}
+                                setOutdoor={setOutdoor}
+                            />
+                            <window.AddDogSheet
+                                open={sheetOpen}
+                                onClose={() => setSheetOpen(false)}
+                                onAdd={onAdd} />
+                            {toast && <window.Toast message={toast.message} kind={toast.kind}/>}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

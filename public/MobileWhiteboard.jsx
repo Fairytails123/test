@@ -3,13 +3,13 @@ const { useState: useStateMW, useEffect: useEffectMW } = React;
 
 
 const SERVICE_META_M = {
-    "today":     { label: "Today",       icon: "ð", color: "#00AFF1" },
-    "half-am":   { label: "Half AM",     icon: "âï¸", color: "#FF9500" },
-    "half-pm":   { label: "Half PM",     icon: "ð", color: "#FF6B35" },
-    "full":      { label: "Full day",    icon: "ð", color: "#00AFF1" },
-    "boarding":  { label: "Boarding",    icon: "ð ", color: "#AF52DE" },
-    "school":    { label: "School",      icon: "ð", color: "#FF2D55" },
-    "grooming":  { label: "Grooming",    icon: "âï¸", color: "#32ADE6" },
+    "today":     { label: "Today",       icon: "📋", color: "#00AFF1" },
+    "half-am":   { label: "Half AM",     icon: "☀️", color: "#FF9500" },
+    "half-pm":   { label: "Half PM",     icon: "🌙", color: "#FF6B35" },
+    "full":      { label: "Full day",    icon: "📋", color: "#00AFF1" },
+    "boarding":  { label: "Boarding",    icon: "🏠", color: "#AF52DE" },
+    "school":    { label: "School",      icon: "🎓", color: "#FF2D55" },
+    "grooming":  { label: "Grooming",    icon: "✂️", color: "#32ADE6" },
 };
 window.SERVICE_META_M = SERVICE_META_M;
 
@@ -42,14 +42,14 @@ function MobileWhiteboard({ dogs, syncedAgo, onTogglePhoto, onToggleWalk, onAdd,
                     <div style={{minWidth:0}}>
                         <div style={{fontSize:15,fontWeight:700,color:D.ink,letterSpacing:"-0.02em",lineHeight:1.1}}>Whiteboard</div>
                         <div style={{fontSize:11,color:D.sub2,fontWeight:600,marginTop:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>
-                            <span style={{color:"#34C759"}}>â</span> Synced {syncedAgo}s
+                            <span style={{color:"#34C759"}}>●</span> Synced {syncedAgo}s
                         </div>
                     </div>
                 </div>
                 <button onClick={() => setOutdoor(!outdoor)}
                     title="Outdoor / gloves mode"
                     style={{...mwStyles.modeBtn, background: outdoor ? "#FFD60A" : "rgba(0,175,241,0.10)", color: outdoor ? "#1C1C1E" : "#00AFF1"}}>
-                    {outdoor ? "â" : "â"}
+                    {outdoor ? "☀" : "○"}
                 </button>
             </div>
 
@@ -73,7 +73,7 @@ function MobileWhiteboard({ dogs, syncedAgo, onTogglePhoto, onToggleWalk, onAdd,
             </div>
 
 
-            {/* Segmented tab strip â horizontal scroll */}
+            {/* Segmented tab strip — horizontal scroll */}
             <div style={mwStyles.segScroller}>
                 <button onClick={()=>setTab("today")} style={{
                     ...mwStyles.segBtn, height:D.chipH,
@@ -104,7 +104,7 @@ function MobileWhiteboard({ dogs, syncedAgo, onTogglePhoto, onToggleWalk, onAdd,
             <div style={mwStyles.list}>
                 {filteredDogs.length === 0 ? (
                     <div style={mwStyles.emptyState}>
-                        <div style={{fontSize:40,opacity:0.25}}>ð¾</div>
+                        <div style={{fontSize:40,opacity:0.25}}>🐾</div>
                         <div style={{fontSize:15,fontWeight:600,color:D.sub2,marginTop:8}}>No dogs in this service</div>
                         <button onClick={onAdd} style={{...mwStyles.emptyAdd, background: SERVICE_META_M[tab]?.color || "#00AFF1"}}>+ Add one</button>
                     </div>
@@ -153,10 +153,10 @@ function MobileWhiteboard({ dogs, syncedAgo, onTogglePhoto, onToggleWalk, onAdd,
                 </div>
                 <div style={{...mwStyles.bottomNav, minHeight:D.navH}}>
                     {[
-                        {id:"today", icon:"ð", label:"Today"},
-                        {id:"vans",  icon:"ð", label:"Vans"},
-                        {id:"reports", icon:"ð", label:"Reports"},
-                        {id:"notes", icon:"ð", label:"Notes"},
+                        {id:"today", icon:"📋", label:"Today"},
+                        {id:"vans",  icon:"🚐", label:"Vans"},
+                        {id:"reports", icon:"📊", label:"Reports"},
+                        {id:"notes", icon:"📝", label:"Notes"},
                     ].map(t => (
                         <button key={t.id} onClick={()=>setNavTab(t.id)} style={{
                             ...mwStyles.navBtn,
@@ -193,7 +193,7 @@ function MobileDogRow({ dog, accent, D, onTogglePhoto, onToggleWalk }) {
             fontVariantNumeric:"tabular-nums",
         }}>
             <span style={{opacity:0.65,fontSize:9}}>{slot}</span>
-            {code || "â"}
+            {code || "—"}
         </span>
     );
 
@@ -225,7 +225,7 @@ function MobileDogRow({ dog, accent, D, onTogglePhoto, onToggleWalk }) {
                     <VanPill slot="PM" code={dog.vanPm}/>
                 </div>
             </div>
-            {/* Walk checkbox â only meaningful if needsWalk */}
+            {/* Walk checkbox — only meaningful if needsWalk */}
             <button
                 onClick={() => dog.needsWalk && onToggleWalk && onToggleWalk()}
                 title={dog.needsWalk ? (dog.walkDone ? "Walk done" : "Walk pending") : "No walk booked"}
@@ -244,7 +244,7 @@ function MobileDogRow({ dog, accent, D, onTogglePhoto, onToggleWalk }) {
                          : "#1E8E3E",
                     fontSize: 14, fontWeight:800,
                 }}>
-                <span style={{fontSize:14,lineHeight:1}}>{dog.needsWalk ? (dog.walkDone ? "â" : "ð¶") : "â"}</span>
+                <span style={{fontSize:14,lineHeight:1}}>{dog.needsWalk ? (dog.walkDone ? "✓" : "🚶") : "—"}</span>
                 <span style={{fontSize:8,fontWeight:700,letterSpacing:"0.04em",marginTop:1,opacity:0.85}}>WALK</span>
             </button>
             <button onClick={onTogglePhoto} style={{
@@ -255,7 +255,7 @@ function MobileDogRow({ dog, accent, D, onTogglePhoto, onToggleWalk }) {
                 color: dog.photoDone ? "#1E8E3E" : "#00AFF1",
                 fontWeight:700,
             }}>
-                <span style={{fontSize:14,lineHeight:1}}>{dog.photoDone ? "â" : "ð¸"}</span>
+                <span style={{fontSize:14,lineHeight:1}}>{dog.photoDone ? "✓" : "📸"}</span>
                 <span style={{fontSize:8,fontWeight:700,letterSpacing:"0.04em",marginTop:1,opacity:0.85}}>PHOTO</span>
             </button>
         </div>
